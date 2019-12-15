@@ -100,7 +100,7 @@ public class Kostya {
     }
 
     private void calculateH(double[] x, int length) {
-        h = new double[length];
+        h = new double[length + 1];
 
         for (int i = 1; i < length; i++) {
             h[i] = x[i] - x[i - 1];
@@ -128,6 +128,10 @@ public class Kostya {
         a[length - 1] = 0;
         b[length - 1] = 0;
         f[length - 1] = rightBorder;
+
+        System.out.println("a: " + Arrays.toString(a));
+        System.out.println("b: " + Arrays.toString(b));
+        System.out.println("cc: " + Arrays.toString(cc));
     }
 
     private void calculateMuNu(int length) {
@@ -140,25 +144,29 @@ public class Kostya {
             mu[i + 1] = -b[i] / (cc[i] + mu[i] * a[i]);
             nu[i + 1] = (f[i] - a[i] * nu[i]) / (cc[i] + mu[i] * a[i]);
         }
+
+        System.out.println("mu: " + Arrays.toString(mu));
+        System.out.println("nu: " + Arrays.toString(nu));
     }
 
     private void calculateC(int length) {
-        c = new double[length];
+        c = new double[length + 1];
         c[length - 1] = (f[length - 1] - a[length - 1] * nu[length - 1])
                 / (cc[length - 1] + a[length - 1] * mu[length - 1]);
 
-        for (int i = length - 2; i >= 0; i--) {
+        for (int i = length - 1; i >= 0; i--) {
             c[i] = mu[i + 1] * c[i + 1] + nu[i + 1];
         }
     }
 
     private void calculateD(double[] y, int length) {
-        d = new double[length];
-        b_c = new double[length];
+        d = new double[length + 1];
+        b_c = new double[length + 1];
 
-        for (int i = length - 1; i > 0; i--) {
+        for (int i = 1; i < length; i++) {
             d[i] = (c[i] - c[i - 1]) / h[i];
-            b_c[i] = h[i] / 2 * c[i] - h[i] * h[i] / 6 * d[i] + (y[i] - y[i - 1]) / h[i];
+//            b_c[i] = h[i] / 2 * c[i] - h[i] * h[i] / 6 * d[i] + (y[i] - y[i - 1]) / h[i];
+//            b_c[i] = c[i] + d[i] * (д - x[i]);
         }
     }
 
